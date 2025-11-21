@@ -1,12 +1,13 @@
 # 📘 Rangkuman Modul Praktikum Basis Data (Bab 1–2)
 
-Repository ini berisi rangkuman materi dari **Modul Praktikum Basis Data – MySQL** untuk **Bab 1 dan Bab 2**, mencakup dasar perancangan basis data menggunakan ERD serta perintah dasar DDL pada MySQL.
+Rangkuman ini dibuat berdasarkan **Modul Praktikum Basis Data – MySQL**, mencakup materi **Bab 1** (Konversi ERD ke Relasi) dan **Bab 2** (Dasar Database & DDL).  
+File ini disusun ulang menjadi format dokumentasi yang rapi dan mudah dipahami.
 
 ---
 
 ## 📄 Sumber Modul
 
-Modul asli dapat diakses melalui file berikut:
+Modul asli dapat diakses pada file berikut:
 
 [📘 MODUL PRAKTIKUM BASIS DATA.pdf](sandbox:/mnt/data/MODUL%20PRAKTIKUM%20BASIS%20DATA.pdf)
 
@@ -14,117 +15,138 @@ Modul asli dapat diakses melalui file berikut:
 
 # 📚 BAB 1 — Konversi ER Diagram ke Skema Relasi
 
-Bab ini membahas cara mengonversi *Entity Relationship Diagram (ERD)* menjadi **skema relasi**, kemudian diterjemahkan menjadi **tabel fisik** dalam database.
+Bab 1 berisi penjelasan tentang cara mengonversi *Entity Relationship Diagram (ERD)* menjadi **skema relasi**, dan dari skema relasi menjadi **tabel fisik** pada database.
 
 ---
 
-## 🔑 Konsep Utama
+## 🔑 Konsep Dasar
 
-### **1. Entitas (Entity)**
+### **Entitas (Entity)**
 Objek nyata yang dapat diidentifikasi.  
-➡️ Menjadi **tabel**.
+➡️ Dikoversi menjadi **tabel**.
 
-### **2. Atribut (Attribute)**
-Karakteristik dari entitas.  
-➡️ Menjadi **kolom**.
+### **Atribut (Attribute)**
+Karakteristik pada entitas.  
+➡️ Dikoversi menjadi **kolom**.
 
-### **3. Primary Key (PK)**
-Atribut unik untuk membedakan tiap record.  
-➡️ Tetap menjadi PK.
+### **Primary Key (PK)**
+Atribut unik sebagai identitas baris.  
+➡️ Tetap menjadi PK pada tabel.
 
-### **4. Relasi (Relationship)**
+### **Relasi (Relationship)**
 Hubungan antar entitas.  
-➡️ Menghasilkan **Foreign Key** atau **tabel relasi**.
+➡️ Menjadi **Foreign Key** atau **tabel relasi**.
 
-### **5. Kardinalitas**
-Jenis hubungan:
+### **Kardinalitas**
+Jenis jumlah hubungan:
 - **1 — 1**
 - **1 — N**
 - **N — M**
 
 ---
 
-# 🔄 Aturan Konversi ERD → Relasi
+## 🔄 Aturan Konversi ERD → Relasi
 
 ### **1. Entitas Kuat → Tabel**
-- Semua atribut menjadi kolom
+- Setiap entitas kuat menjadi tabel
+- Atribut → kolom
 - PK tetap sama
 
-### **2. Atribut Komposit → Dipecah**
+---
+
+### **2. Atribut Komposit**
+Atribut yang terdiri dari beberapa bagian → dipecah menjadi kolom terpisah  
 Contoh:  
 `Alamat → (jalan, kota, provinsi)`
 
-### **3. Atribut Multivalue → Tabel Baru**
-Karena satu entitas bisa memiliki banyak nilai.
+---
+
+### **3. Atribut Multivalue**
+Karena dapat berisi banyak nilai → harus dibuat **tabel baru**
+
+---
 
 ### **4. Entitas Lemah**
-- Menjadi tabel baru
+- Menjadi tabel baru  
 - PK gabungan (PK entitas kuat + atribut lemah)
 
+---
+
 ### **5. Relasi 1 — 1**
-FK ditempatkan pada salah satu tabel (biasanya yang lebih lemah).
+FK ditempatkan pada salah satu tabel, biasanya entitas yang lebih lemah.
+
+---
 
 ### **6. Relasi 1 — N**
-FK ditempatkan pada sisi **N**.
+FK diletakkan di entitas pada sisi **N**.
 
-### **7. Relasi 1 — N dengan Atribut Relasi**
-Harus menjadi **tabel baru**.
+---
+
+### **7. Relasi 1 — N dengan atribut relasi**
+Jika relasi memiliki atribut, harus dibuat **tabel relasi**.
+
+---
 
 ### **8. Relasi N — M**
-Selalu menjadi **tabel relasi** yang berisi:
-- FK entitas A  
-- FK entitas B  
+Selalu menghasilkan **tabel relasi** yang memuat:
+- FK dari dua entitas
 - Atribut relasi (jika ada)
+
+---
 
 ### **9. Unary Relationship**
 Relasi dalam satu entitas:
-- 1–1 → FK dalam tabel
-- N–M → tabel relasi tambahan
+- 1 — 1 → FK pada tabel yang sama  
+- N — M → tabel relasi tambahan
+
+---
 
 ### **10. Ternary Relationship**
-3 entitas → menghasilkan:
-- 3 tabel entitas
-- 1 tabel relasi
+Hubungan antara 3 entitas → menghasilkan **empat tabel**:
+- 3 tabel entitas  
+- 1 tabel relasi  
+
+---
 
 ### **11. Generalisasi / Spesialisasi (ISA)**
-Dua pendekatan:
+Pendekatan:
 - Superclass + Subclass  
-- Hanya Subclass (menggabungkan atribut)
+- Hanya subclass (menggabungkan semua atribut)
+
+---
 
 ### **12. Agregasi**
-Relasi kompleks → tabel relasi tambahan.
+Relasi kompleks → menghasilkan tabel relasi tambahan.
 
 ---
 
 ## 🧪 Studi Kasus: Skema Apotik
 
-Konversi ERD Apotik menghasilkan beberapa tabel, di antaranya:
-
-- pasien  
-- dokter  
-- resep  
-- detail_resep  
-- obat  
-- kategori_obat  
-- pegawai  
-- pembayaran  
-- retur  
+Konversi ERD Apotik menghasilkan banyak tabel, seperti:
+- `pasien`  
+- `dokter`  
+- `resep`  
+- `detail_resep`  
+- `obat`  
+- `kategori_obat`  
+- `pegawai`  
+- `pembayaran`  
 
 ---
 
 # 📚 BAB 2 — Pengantar Basis Data & DDL MySQL
 
-Bab ini membahas pengenalan database, DBMS, dan perintah dasar SQL untuk pengelolaan database.
+Bab 2 membahas konsep dasar basis data, DBMS, serta perintah DDL pada MySQL.
 
 ---
 
 ## 🔑 Konsep Dasar
 
 ### **Basis Data**
-Kumpulan data terorganisir agar mudah diakses.
+Kumpulan data yang disusun terstruktur agar mudah diakses dan dikelola.
 
-### **DBMS**
-Software untuk mengelola database, contoh:
+### **DBMS (Database Management System)**
+Software untuk mengelola database, seperti:
 - MySQL  
 - PostgreSQL  
 - MariaDB  
@@ -132,16 +154,17 @@ Software untuk mengelola database, contoh:
 - SQL Server  
 
 ### **MySQL**
-DBMS populer:
+DBMS populer dengan karakteristik:
 - Open-source  
 - Menggunakan SQL  
-- Banyak digunakan dalam aplikasi web  
+- Cepat dan stabil  
+- Banyak digunakan pada web server  
 
 ---
 
 # 💻 Mengakses MySQL via CLI
 
-### **Login MySQL (Windows/XAMPP)**
+### **Login MySQL (Windows / XAMPP)**
 
 ```bash
 cd C:\xampp\mysql\bin
